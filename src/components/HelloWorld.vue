@@ -1,42 +1,60 @@
 <template>
-  <div class="hello">
-    <video width="400" controls>
-      <source src="mov_bbb.mp4" type="video/mp4">
-      <source src="mov_bbb.ogg" type="video/ogg">
-      Your browser does not support HTML5 video.
-    </video>
+  <v-container fluid>
+    <v-slide-y-transition mode="out-in">
+      <v-layout column align-center>
+        <img src="@/assets/logo.png" alt="Vuetify.js" class="mb-5">
+        <blockquote>
+          <progress value="0" max="100" id="uploader"></progress>
+          <input accept="video/*" type="file" value="upload" @change="fileBtn(file, $event)">
 
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
-  </div>
+          <footer>
+            <small>
+              <em>&mdash;John Johnson</em>
+            </small>
+          </footer>
+        </blockquote>
+      </v-layout>
+    </v-slide-y-transition>
+  </v-container>
 </template>
-
 <script>
-import fireStorage from '../main'
-export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+import Firebase from 'firebase'
+  const config = {
+    apiKey: "AIzaSyDnlZbLY3lVtMGrv97W_sLhAXHkMQwPv4M",
+    authDomain: "jobsity-challenge.firebaseapp.com",
+    databaseURL: "https://jobsity-challenge.firebaseio.com",
+    projectId: "jobsity-challenge",
+    storageBucket: "jobsity-challenge.appspot.com",
+    messagingSenderId: "593566901515"
   }
+  const app = Firebase.initializeApp(config);
+
+
+export default {
+methods:{
+  fileBtn:function(file, e){
+      e.preventDefault();
+    const uploader = document.getElementById('uploader');
+    //get file
+    let getFile = e.target.files[0];
+    //set storage ref
+    let storageRef = Firebase.storage().ref('test/'+getFile.name);
+    //upload file
+    let task = storageRef.put(getFile);
+    task.on('state_changed',
+     function progress(snapshot){
+      let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+      uploader.value = percentage;
+    },
+    function error(err){
+      console.log(err);
+    },
+    function complete(){
+       console.log('complete upload');
+    }
+    );
+  }
+}
 }
 </script>
 
