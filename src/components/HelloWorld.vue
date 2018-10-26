@@ -6,7 +6,9 @@
         <blockquote>
           <progress value="0" max="100" id="uploader"></progress>
           <input accept="video/*" type="file" value="upload" @change="fileBtn(file, $event)">
-
+          <video width="400" controls>
+            <source :src="videoSrc" type="video/mp4">
+          </video>
           <footer>
             <small>
               <em>&mdash;John Johnson</em>
@@ -31,6 +33,11 @@ import Firebase from 'firebase'
 
 
 export default {
+  data () {
+      return {
+        videoSrc: '',
+      }
+    },
 methods:{
   fileBtn:function(file, e){
       e.preventDefault();
@@ -51,8 +58,19 @@ methods:{
     },
     function complete(){
        console.log('complete upload');
+       // Create a reference to the file whose metadata we want to retrieve
     }
     );
+    var forestRef = Firebase.storage().ref().child('test/sintel_trailer-480p.mp4');
+
+    // Get metadata properties
+    forestRef.getMetadata().then(function(metadata) {
+      // Metadata now contains the metadata for 'images/forest.jpg'
+      console.log(metadata)
+    }).catch(function(error) {
+      // Uh-oh, an error occurred!
+      console.log(error)
+    });
   }
 }
 }
