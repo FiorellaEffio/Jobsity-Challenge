@@ -7,6 +7,9 @@
           <input accept="video/*" type="file" value="upload" @change="fileBtn(file, $event)">
           <video width="400" controls :src="videoSrc">
           </video>
+          {{videoSrc}}
+          <!-- A proof of MediaSource -->
+          <video ref="myVideo" width="400" controls ></video>
         </blockquote>
       </v-layout>
   </v-container>
@@ -22,11 +25,16 @@ import Firebase from 'firebase'
     messagingSenderId: "593566901515"
   }
   const app = Firebase.initializeApp(config);
+import Hls from 'hls.js'
 
 export default {
   data () {
       return {
         videoSrc: '',
+        assetURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
+        videoMediaSource: '',
+        mimeCodec: 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
+        mediaSource: new MediaSource,
       }
     },
 methods:{
@@ -68,8 +76,25 @@ methods:{
       console.log(url);
       self.videoSrc = url ;
     });
+    if(Hls.isSupported()) {
+    console.log('hasta aqui bien')
+          var hls = new Hls();
+          hls.loadSource('https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8');
+          hls.attachMedia(this.$refs.myVideo);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+            console.log('its ok');
+            console.log(this.$refs)
+        });
+       }
+        else if (this.$refs.myVideo.canPlayType('application/vnd.apple.mpegurl')) {
+          this.$refs.myVideo.src = 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8';
+          this.$refs.myVideo.addEventListener('canplay',function() {
+            this.$refs.myVideo.play();
+          });
+        }
   }
-}
+},
+
 }
 </script>
 
