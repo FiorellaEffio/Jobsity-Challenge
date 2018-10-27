@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
     <h1>Hi! You can create clips from this video</h1>
-    <video width="400" controls :src="URLwithParams"></video>
+    <video width="400" controls :src="videoSrc"></video>
     <p>Please fill this information below</p>    
     <input type="text" v-model="currentClipName" placeholder="Give a name to your clip">
     <input type="text" v-model="initTime" placeholder="Init Time">
     <input type="text" v-model="finalTime" placeholder="Final Time">
     <button @click="createClip()">Create a clip</button>
     <br>
-    <div v-for="clip in clips" :key="clip.clipName">
+    <div v-for="clip in clips" :key="clip.clipName" @click="changeURLVideoPlayer(clip.urlTime)">
       {{clip.clipName}}
       <video muted width="400" :src="clip.urlTime"></video>
     </div>
@@ -19,8 +19,8 @@
 export default {
   data () {
       return {
-        videoSrc: '',
         defaultURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
+        videoSrc: this.defaultURL,
         initTime: '0',
         finalTime: '0',
         currentClipName: '',
@@ -34,6 +34,9 @@ export default {
         clipName: this.currentClipName
       }
       this.clips.push(newClip);
+    },
+    changeURLVideoPlayer: function(newURL) {
+      this.videoSrc = newURL;
     }
   },
   computed: {
