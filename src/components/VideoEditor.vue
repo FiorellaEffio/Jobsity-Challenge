@@ -11,6 +11,7 @@
     <div v-for="clip in clips" :key="clip.clipName" @click="changeURLVideoPlayer(clip.urlTime)">
       {{clip.clipName}}
       <video muted width="400" :src="clip.urlTime"></video>
+      <button v-if="clip.clipName != 'FullVideo'" @click="deleteClip(clip.clipName)">Delete</button>
     </div>
   </v-container>
 </template>
@@ -29,14 +30,39 @@ export default {
     },
   methods:{
     createClip: function() {
-      let newClip = {
-        urlTime: this.URLwithParams,
-        clipName: this.currentClipName
+      if(this.currentClipName.trim().length !== 0) {
+        let existName = false;
+        this.clips.forEach(clip => {
+          if(clip.clipName == this.currentClipName) {
+            existName = true;
+          }
+        })
+        if(!existName) {
+          let newClip = {
+            urlTime: this.URLwithParams,
+            clipName: this.currentClipName
+          }
+          this.clips.push(newClip);
+        } else {
+          alert('Clip Name already exists')
+        }
+      } else {
+        alert('Please enter a name for the clip')
       }
-      this.clips.push(newClip);
     },
     changeURLVideoPlayer: function(newURL) {
       this.videoSrc = newURL;
+    },
+    deleteClip: function(clipName) {
+      let index;
+      let i = 0;
+      // 1 because we don't want to delete the first element(full video)
+      for(i; i< this.clips.length; i++) {
+        if(this.clips[i].clipName === clipName) {
+          index = i;
+        }
+      }
+      this.clips.splice(index, 1);
     }
   },
   computed: {
