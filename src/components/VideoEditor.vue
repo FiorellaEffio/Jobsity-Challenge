@@ -8,10 +8,12 @@
     <input type="text" v-model="finalTime" placeholder="Final Time">
     <button @click="createClip()">Create a clip</button>
     <br>
-    <div v-for="clip in clips" :key="clip.clipName" @click="changeURLVideoPlayer(clip.urlTime)">
+    <div v-for="clip in clips" :key="clip.clipName">
       {{clip.clipName}}
       <video muted width="400" :src="clip.urlTime"></video>
+      <button @click="changeURLVideoPlayer(clip.urlTime)">Play in the Video Player</button>
       <button v-if="clip.clipName != 'FullVideo'" @click="deleteClip(clip.clipName)">Delete</button>
+      <button v-if="clip.clipName != 'FullVideo'" @click="editClip(clip.clipName)">Edit</button>
     </div>
   </v-container>
 </template>
@@ -43,6 +45,9 @@ export default {
             clipName: this.currentClipName
           }
           this.clips.push(newClip);
+          this.currentClipName = '';
+          this.initTime = 0;
+          this.finalTime = 0;
         } else {
           alert('Clip Name already exists')
         }
@@ -63,6 +68,18 @@ export default {
         }
       }
       this.clips.splice(index, 1);
+    },
+    editClip: function(clipName) {
+      let newName = prompt('Enter a new name');
+      let newInit = prompt('new init time');
+      let newFinal = prompt('new final time');
+      this.clips.forEach(clip => {
+        if(clip.clipName === clipName) {
+          clip.clipName = newName;  
+          clip.urlTime = this.defaultURL + "#t="+ newInit + ','+ newFinal;
+          console.log(this.clips)
+        }
+      })
     }
   },
   computed: {
