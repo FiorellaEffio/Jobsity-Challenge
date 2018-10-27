@@ -10,7 +10,7 @@
     <br>
     <div v-for="clip in clips" :key="clip.clipName">
       {{clip.clipName}}
-      <video autoplay width="400" :src="clip.urlTime"></video>
+      <video muted width="400" :src="clip.urlTime"></video>
     </div>
   </v-container>
 </template>
@@ -24,7 +24,7 @@ export default {
         initTime: '0',
         finalTime: '0',
         currentClipName: '',
-        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: this.currentClipName}]
+        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo'}]
       }
     },
   methods:{
