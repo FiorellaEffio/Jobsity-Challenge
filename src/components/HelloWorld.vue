@@ -1,22 +1,14 @@
 <template>
   <v-container fluid>
-    <v-slide-y-transition mode="out-in">
       <v-layout column align-center>
         <img src="@/assets/logo.png" alt="Vuetify.js" class="mb-5">
         <blockquote>
           <progress value="0" max="100" id="uploader"></progress>
           <input accept="video/*" type="file" value="upload" @change="fileBtn(file, $event)">
-          <video width="400" controls>
-            <source :src="videoSrc" type="video/mp4">
+          <video width="400" controls :src="videoSrc">
           </video>
-          <footer>
-            <small>
-              <em>&mdash;John Johnson</em>
-            </small>
-          </footer>
         </blockquote>
       </v-layout>
-    </v-slide-y-transition>
   </v-container>
 </template>
 <script>
@@ -30,7 +22,6 @@ import Firebase from 'firebase'
     messagingSenderId: "593566901515"
   }
   const app = Firebase.initializeApp(config);
-
 
 export default {
   data () {
@@ -62,14 +53,20 @@ methods:{
     }
     );
     var forestRef = Firebase.storage().ref().child('test/sintel_trailer-480p.mp4');
-
     // Get metadata properties
     forestRef.getMetadata().then(function(metadata) {
       // Metadata now contains the metadata for 'images/forest.jpg'
       console.log(metadata)
+      console.log(metadata.downloadURLs[0])
+      // videoSrc = metadata.downloadURLs[0];
     }).catch(function(error) {
       // Uh-oh, an error occurred!
       console.log(error)
+    });
+    var self = this;
+    forestRef.getDownloadURL().then(function(url) {
+      console.log(url);
+      self.videoSrc = url ;
     });
   }
 }
@@ -78,18 +75,5 @@ methods:{
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
