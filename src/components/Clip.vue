@@ -7,7 +7,7 @@
                 </v-list-tile-content>
                 <video muted width="100" :src="clipProperties.urlTime"></video>
                 <v-list-tile-action>
-                  <v-btn icon @click="changeURLVideoPlayer(clipProperties.urlTime)">
+                  <v-btn icon @click="$emit('change-src', clipProperties.urlTime)">
                     <v-icon>play_circle_filled</v-icon>
                   </v-btn>
                   <v-menu bottom left v-if="clipProperties.clipName != 'FullVideo'">
@@ -39,7 +39,7 @@
                       <v-btn color="green darken-1" flat="flat" @click="dialogDelete = false">
                         Cancel
                       </v-btn>
-                      <v-btn color="green darken-1" flat="flat" @click="deleteClip(clipProperties.clipName)">
+                      <v-btn color="green darken-1" flat="flat" @click="$emit('delete-clip', clipProperties.clipName)">
                         Delete anyway {{clipProperties.clipName}}
                       </v-btn>
                     </v-card-actions>
@@ -96,9 +96,6 @@ export default {
       }
     },
   methods:{
-    deleteClip: function(clipNameToDelete) {
-      this.$emit('delete-clip', clipNameToDelete)
-    },
     editClip: function(clipName) {
       let newClipProperties = {
         clipName: this.editClipName,

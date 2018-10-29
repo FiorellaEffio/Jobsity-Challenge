@@ -28,7 +28,7 @@
             </v-btn>
           </v-toolbar>
           <v-list two-line>
-            <Clip v-for="clip in clips" :key="clip.clipName" :clipProperties="clip" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
+            <Clip v-for="clip in clips" :key="clip.clipName" :clipProperties="clip" @change-src="changeURLVideoPlayer($event)" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
           </v-list>
         </v-card>
       </v-flex>
@@ -80,8 +80,7 @@ export default {
       }
     },
     changeURLVideoPlayer: function(newURL) {
-      this.videoSrc = this.defaultURL;
-      this.videoSrc = newURL;
+      this.videoSrcPlayer = newURL;
     },
     deleteClip: function(clipName) {
       let index;
