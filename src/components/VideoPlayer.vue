@@ -38,7 +38,6 @@
 <script>
 import Clip from './Clip'
 export default {
-  name: 'video-player',
   components: {
     Clip
   },
@@ -94,9 +93,7 @@ export default {
       this.clips.splice(index, 1);
     },
     editClip: function(newClip) {
-      console.log(newClip)
       this.clips.forEach(clip => {
-        console.log(clip)
         if(clip.clipName === newClip.previousClipName) {
           clip.clipName = newClip.clipName;  
           clip.urlTime = this.defaultURL + "#t="+ newClip.beginAt + ','+ newClip.finishAt;
