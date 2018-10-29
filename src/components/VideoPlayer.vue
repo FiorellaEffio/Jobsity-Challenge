@@ -6,17 +6,17 @@
           <v-text-field v-model="currentClipName"
             label="Give a name to your clip"
             outline
-            prepend-icon="person"
+            append-icon="person"
           ></v-text-field>
           <v-text-field v-model="initTime"
             label="Init Time"
             outline
-            prepend-icon="playlist_play"
+            append-icon="playlist_play"
           ></v-text-field>
           <v-text-field v-model="finalTime"
             label="Final Time"
             outline
-            prepend-icon="playlist_add_check"
+            append-icon="playlist_add_check"
           ></v-text-field>
           <div class="text-xs-center">
             <v-btn round color="orange" dark type="submit">Create clip</v-btn>
@@ -27,18 +27,57 @@
         <video width="600" controls :src="videoSrc"></video>
       </v-flex>
     </v-layout>
+    <v-layout row>
+      <v-flex xs12>
+        <v-card>
+          <v-toolbar color="pink" dark>
+            <v-toolbar-side-icon></v-toolbar-side-icon>
+            <v-toolbar-title>Inbox</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+              <v-icon>search</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon>check_circle</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-list two-line>
+            <div v-for="(clip, index) in clips" :key="clip.clipName">
+              <v-list-tile
+                avatar
+                ripple
+              >
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ clip.clipName }}</v-list-tile-title>
+                  <v-list-tile-sub-title class="text--primary">{{ clip.clipName }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{ clip.clipName }}</v-list-tile-sub-title>
+                </v-list-tile-content>
   
-    <div v-for="clip in clips" :key="clip.clipName">
-      {{clip.clipName}}
-      <video muted width="400" :src="clip.urlTime"></video>
-      <button @click="changeURLVideoPlayer(clip.urlTime)">Play in the Video Player</button>
-      <button v-if="clip.clipName != 'FullVideo'" @click="deleteClip(clip.clipName)">Delete</button>
-      <button v-if="clip.clipName != 'FullVideo'" @click="editClip(clip.clipName)">Edit</button>
-    </div>
+                <v-list-tile-action>
+                  <video muted width="100" :src="clip.urlTime"></video>
+                </v-list-tile-action>
+                <v-btn icon @click="changeURLVideoPlayer(clip.urlTime)">
+                  <v-icon>play_circle_filled</v-icon>
+                </v-btn>
+                <v-btn icon v-if="clip.clipName != 'FullVideo'" @click="deleteClip(clip.clipName)">
+                  <v-icon>delete</v-icon>
+                </v-btn>
+                <v-btn icon v-if="clip.clipName != 'FullVideo'" @click="editClip(clip.clipName)">
+                  <v-icon>edit</v-icon>
+                </v-btn>
+              </v-list-tile>
+              <v-divider
+                v-if="index + 1 < clips.length"
+                :key="index"
+              ></v-divider>
+            </div>
+          </v-list>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  
     <ClipsList/>
-    <ClipsList/>
-    <ClipsList/>
-    <ClipsList/>
+
   </v-container>
 </template>
 <script>
