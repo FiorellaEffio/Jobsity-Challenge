@@ -62,7 +62,7 @@
                       <v-icon>more_vert</v-icon>
                     </v-btn>
                     <v-list>
-                      <v-list-tile @click="deleteClip(clip.clipName)">
+                      <v-list-tile @click="dialog = true">
                         <v-icon>delete</v-icon>
                       </v-list-tile>
                       <v-list-tile @click="editClip(clip.clipName)">
@@ -77,6 +77,25 @@
                 v-if="index + 1 < clips.length"
                 :key="index"
               ></v-divider>
+              <div>
+                <v-dialog v-model="dialog" max-width="290">
+                        <v-card>
+                          <v-card-title class="headline">Are you sure?</v-card-title>
+                          <v-card-text>
+                            You will not be able to recover this clip again.
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" flat="flat" @click="dialog = false">
+                              Cancel
+                            </v-btn>
+                            <v-btn color="green darken-1" flat="flat" @click="deleteClip(clip.clipName)">
+                              Delete anyway
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog> 
+              </div>
             </div>
           </v-list>
         </v-card>
@@ -100,8 +119,8 @@ export default {
         videoSrc: this.defaultURL,
         initTime: '',
         finalTime: '',
-        autoplay: 'true',
         currentClipName: '',
+        dialog: false,
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
@@ -133,6 +152,7 @@ export default {
       }
     },
     changeURLVideoPlayer: function(newURL) {
+      this.videoSrc = this.defaultURL;
       this.videoSrc = newURL;
     },
     deleteClip: function(clipName) {
@@ -145,6 +165,7 @@ export default {
         }
       }
       this.clips.splice(index, 1);
+      this.dialog = false;
     },
     editClip: function(clipName) {
       let newName = prompt('Enter a new name');
