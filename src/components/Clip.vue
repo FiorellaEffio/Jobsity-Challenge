@@ -83,7 +83,7 @@
 <script>
 
 export default {
-  name: 'ClipsList',
+  name: 'Clip',
   props: ['clipProperties'],
   data () {
       return {

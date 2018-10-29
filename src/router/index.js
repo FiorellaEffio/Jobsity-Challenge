@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VideoPlayer from '@/components/VideoPlayer'
-import ClipsList from '@/components/ClipsList'
+import Clip from '@/components/Clip'
 
 Vue.use(Router)
 
@@ -14,8 +14,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'ClipsList',
-      component: ClipsList
+      name: 'Clip',
+      component: Clip
     },
 
   ]
