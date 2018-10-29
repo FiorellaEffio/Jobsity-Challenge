@@ -38,7 +38,7 @@
             </v-btn>
           </v-toolbar>
           <v-list two-line>
-            <ClipsList v-for="clip in clips" :key="clip.clipName" :clipProperties="clip" @delete-clip="deleteClip($event)"/>
+            <ClipsList v-for="clip in clips" :key="clip.clipName" :clipProperties="clip" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
           </v-list>
         </v-card>
       </v-flex>
@@ -60,11 +60,6 @@ export default {
         createClipName: '',
         createInitTime: '',
         createFinalTime: '',
-        editClipName: '',
-        editInitTime: '',
-        editFinalTime: '',
-        dialogDelete: false,
-        dialogEdit: false,
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
@@ -100,38 +95,27 @@ export default {
       this.videoSrc = newURL;
     },
     deleteClip: function(clipName) {
-      console.log(clipName);
       let index;
       let i = 1;
-      console.log(clipName);
-      console.log(this.clips)
       // 1 because we don't want to delete the first element(full video)
       for(i; i< this.clips.length; i++) {
         if(this.clips[i].clipName === clipName) {
-          console.log(this.clips[i].clipName)
           index = i;
         }
       }
       this.clips.splice(index, 1);
-      this.dialogDelete = false;
     },
-    editClip: function(clipName) {
-      console.log(clipName)
+    editClip: function(newClip) {
+      console.log(newClip)
       this.clips.forEach(clip => {
-        if(clip.clipName === clipName) {
-          console.log(clip.clipName);
-          console.log(clipName);
-          clip.clipName = this.editClipName;  
-          clip.urlTime = this.defaultURL + "#t="+ this.editInitTime + ','+ this.editFinalTime;
-          clip.beginAt = editInitTime;
-          clip.finishAt = editFinalTime;
-          console.log(this.clips)
+        console.log(clip)
+        if(clip.clipName === newClip.previousClipName) {
+          clip.clipName = newClip.clipName;  
+          clip.urlTime = this.defaultURL + "#t="+ newClip.beginAt + ','+ newClip.finishAt;
+          clip.beginAt = newClip.beginAt;
+          clip.finishAt = newClip.finishAt;
         }
       })
-      this.editClipName = '';
-      this.editInitTime = '';
-      this.editFinalTime = '';
-      this.dialogEdit = false;
     }
   },
   computed: {

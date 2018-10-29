@@ -25,7 +25,7 @@
                   </v-menu>
                 </v-list-tile-action>
               </v-list-tile>
-              <!-- <v-divider v-if="index + 1 < clips.length" :key="index"></v-divider> -->
+              <v-divider></v-divider>
               <div>
                 <!-- Dialog for delete -->
                 <v-dialog v-model="dialogDelete" max-width="290">
@@ -55,12 +55,12 @@
                         outline
                         append-icon="person"
                       ></v-text-field>
-                      <v-text-field v-model="editInitTime"
+                      <v-text-field v-model="editBeginAt"
                         label="New Init Time"
                         outline
                         append-icon="playlist_play"
                       ></v-text-field>
-                      <v-text-field v-model="editFinalTime"
+                      <v-text-field v-model="editFinishAt"
                         label="New Final Time"
                         outline
                         append-icon="playlist_add_check"
@@ -71,7 +71,7 @@
                       <v-btn color="green darken-1" flat="flat" @click="dialogEdit = false">
                         Cancel
                       </v-btn>
-                      <v-btn color="green darken-1" flat="flat" @click="editClip(clipProperties.clipName)">
+                      <v-btn color="green darken-1" flat="flat" @click="editClip()">
                         Save
                       </v-btn>
                     </v-card-actions>
@@ -90,11 +90,23 @@ export default {
         clip:'hola',
         dialogDelete: false,
         dialogEdit: false,
+        editClipName:'',
+        editBeginAt: '',
+        editFinishAt: '',
       }
     },
   methods:{
     deleteClip: function(clipNameToDelete) {
       this.$emit('delete-clip', clipNameToDelete)
+    },
+    editClip: function(clipName) {
+      let newClipProperties = {
+        clipName: this.editClipName,
+        beginAt: this.editBeginAt,
+        finishAt: this.editFinishAt,
+        previousClipName: this.clipProperties.clipName,
+      };
+      this.$emit('edit-clip',newClipProperties);
     }
   },
 
