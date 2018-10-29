@@ -1,13 +1,33 @@
 <template>
-  <v-container fluid>
-    <h1>Hi! You can create clips from this video</h1>
-    <video width="400" controls :src="videoSrc"></video>
-    <p>Please fill this information below</p>    
-    <input type="text" v-model="currentClipName" placeholder="Give a name to your clip">
-    <input type="text" v-model="initTime" placeholder="Init Time">
-    <input type="text" v-model="finalTime" placeholder="Final Time">
-    <button @click="createClip()">Create a clip</button>
-    <br>
+  <v-container>
+    <v-layout row>
+      <v-flex xs3 offset-xs1>
+        <form @submit.prevent="createClip()">
+          <v-text-field v-model="currentClipName"
+            label="Give a name to your clip"
+            outline
+            prepend-icon="person"
+          ></v-text-field>
+          <v-text-field v-model="initTime"
+            label="Init Time"
+            outline
+            prepend-icon="playlist_play"
+          ></v-text-field>
+          <v-text-field v-model="finalTime"
+            label="Final Time"
+            outline
+            prepend-icon="playlist_add_check"
+          ></v-text-field>
+          <div class="text-xs-center">
+            <v-btn round color="orange" dark type="submit">Create clip</v-btn>
+          </div>
+        </form>
+      </v-flex>
+      <v-flex xs6 order-lg2 offset-xs1>
+        <video width="600" controls :src="videoSrc"></video>
+      </v-flex>
+    </v-layout>
+  
     <div v-for="clip in clips" :key="clip.clipName">
       {{clip.clipName}}
       <video muted width="400" :src="clip.urlTime"></video>
