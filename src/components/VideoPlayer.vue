@@ -15,11 +15,19 @@
       <button v-if="clip.clipName != 'FullVideo'" @click="deleteClip(clip.clipName)">Delete</button>
       <button v-if="clip.clipName != 'FullVideo'" @click="editClip(clip.clipName)">Edit</button>
     </div>
+    <ClipsList/>
+    <ClipsList/>
+    <ClipsList/>
+    <ClipsList/>
   </v-container>
 </template>
 <script>
-
+import ClipsList from './ClipsList'
 export default {
+  name: 'video-player',
+  components: {
+    ClipsList
+  },
   data () {
       return {
         defaultURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
