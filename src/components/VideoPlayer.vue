@@ -24,15 +24,14 @@
         </form>
       </v-flex>
       <v-flex xs6 order-lg2 offset-xs1>
-        <video width="600" controls :src="videoSrc"></video>
+        <video width="570" controls :autoplay="autoplay" :src="videoSrc"></video>
       </v-flex>
     </v-layout>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs10 offset-xs1>
         <v-card>
           <v-toolbar color="pink" dark>
-            <v-toolbar-side-icon></v-toolbar-side-icon>
-            <v-toolbar-title>Inbox</v-toolbar-title>
+            <v-toolbar-title>Clips List</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon>
               <v-icon>search</v-icon>
@@ -49,8 +48,7 @@
               >
                 <v-list-tile-content>
                   <v-list-tile-title>{{ clip.clipName }}</v-list-tile-title>
-                  <v-list-tile-sub-title class="text--primary">{{ clip.clipName }}</v-list-tile-sub-title>
-                  <v-list-tile-sub-title>{{ clip.clipName }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>From: {{ clip.beginAt }} to {{ clip.finishAt }}</v-list-tile-sub-title>
                 </v-list-tile-content>
   
                 <v-list-tile-action>
@@ -91,10 +89,11 @@ export default {
       return {
         defaultURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
         videoSrc: this.defaultURL,
-        initTime: '0',
-        finalTime: '0',
+        initTime: '',
+        finalTime: '',
+        autoplay: 'true',
         currentClipName: '',
-        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo'}]
+        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
   methods:{
@@ -109,7 +108,9 @@ export default {
         if(!existName) {
           let newClip = {
             urlTime: this.URLwithParams,
-            clipName: this.currentClipName
+            clipName: this.currentClipName,
+            beginAt: this.initTime,
+            finishAt: this.finalTime
           }
           this.clips.push(newClip);
           this.currentClipName = '';
