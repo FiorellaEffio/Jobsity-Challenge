@@ -58,12 +58,11 @@ export default {
     window.addEventListener('keyup', function(event) {
       // If down arrow was pressed...
       if (event.keyCode == 37) { 
-        console.log('izquierda')
+        // left
         self.changeURLVideoPlayer('previous');
       }
       if (event.keyCode == 39) { 
-                console.log('derecha')
-
+        // rigth
         self.changeURLVideoPlayer('next');
       }
     });
@@ -105,10 +104,14 @@ export default {
       }
       if(newURL === 'previous') {
         index--;
-        this.videoSrcPlayer = this.clips[index].urlTime;
+        if(index >= 0) {
+          this.videoSrcPlayer = this.clips[index].urlTime;
+        }
       } else if(newURL === 'next') {
         index++;
-        this.videoSrcPlayer = this.clips[index].urlTime;
+        if(index<=this.clips.length-1) {
+          this.videoSrcPlayer = this.clips[index].urlTime;
+        }
       } else {
         this.videoSrcPlayer = newURL;
       }
