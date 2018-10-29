@@ -14,6 +14,8 @@
       </v-flex>
       <v-flex xs6 order-lg2 offset-xs1>
         <video width="570" controls autoplay :src="videoSrcPlayer"></video>
+        <v-btn @click="changeURLVideoPlayer('previous')">Previous</v-btn>
+        <v-btn @click="changeURLVideoPlayer('next')">Next</v-btn>
       </v-flex>
     </v-layout>
     <!-- Clips List -->
@@ -48,7 +50,7 @@ export default {
         createClipName: '',
         createInitTime: '',
         createFinalTime: '',
-        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
+        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
   methods:{
@@ -62,7 +64,7 @@ export default {
         })
         if(!existName) {
           let newClip = {
-            urlTime: this.URLwithParams,
+            urlTime: this.defaultURL + "#t=" + this.createInitTime  +","+ this.createFinalTime,
             clipName: this.createClipName,
             beginAt: this.createInitTime,
             finishAt: this.createFinalTime
@@ -79,7 +81,24 @@ export default {
       }
     },
     changeURLVideoPlayer: function(newURL) {
-      this.videoSrcPlayer = newURL;
+      console.log(this.clips[0].clipName)
+      let i = 0;
+      let index;
+      for(i; i<this.clips.length; i++) {
+        if(this.clips[i].urlTime == this.videoSrcPlayer) {
+          console.log(this.clips[i].urlTime)
+          index = i;
+        }
+      }
+      if(newURL === 'previous') {
+        index--;
+        this.videoSrcPlayer = this.clips[index].urlTime;
+      } else if(newURL === 'next') {
+        index++;
+        this.videoSrcPlayer = this.clips[index].urlTime;
+      } else {
+        this.videoSrcPlayer = newURL;
+      }
     },
     deleteClip: function(clipName) {
       let index;
@@ -103,13 +122,6 @@ export default {
       })
     }
   },
-  computed: {
-    // a computed getter
-    URLwithParams: function () {
-      // `this` points to the vm instance
-      return this.defaultURL + '#t=' + this.createInitTime + ',' + this.createFinalTime
-    }
-  }
 }
 </script>
 <style scoped>
