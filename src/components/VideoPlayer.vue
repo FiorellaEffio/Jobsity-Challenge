@@ -53,6 +53,21 @@ export default {
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
+  mounted() {
+    const self = this
+    window.addEventListener('keyup', function(event) {
+      // If down arrow was pressed...
+      if (event.keyCode == 37) { 
+        console.log('izquierda')
+        self.changeURLVideoPlayer('previous');
+      }
+      if (event.keyCode == 39) { 
+                console.log('derecha')
+
+        self.changeURLVideoPlayer('next');
+      }
+    });
+  },
   methods:{
     createClip: function() {
       if(this.createClipName.trim().length !== 0) {
@@ -81,12 +96,10 @@ export default {
       }
     },
     changeURLVideoPlayer: function(newURL) {
-      console.log(this.clips[0].clipName)
       let i = 0;
       let index;
       for(i; i<this.clips.length; i++) {
         if(this.clips[i].urlTime == this.videoSrcPlayer) {
-          console.log(this.clips[i].urlTime)
           index = i;
         }
       }
