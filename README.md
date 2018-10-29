@@ -5,7 +5,7 @@ Create an application that allows a user to slice up a video (sample video: http
 
 ## Mandatory Features
 
-- [ ] An HTML5 video player that utilizes media fragments
+- [X] An HTML5 video player that utilizes media fragments
 - [ ] A list of clips to be played in the video player
 - [ ] The first item in the list should be the full video
 - [ ] An interface to add new clips to the list by specifying a name, start time, and end time
