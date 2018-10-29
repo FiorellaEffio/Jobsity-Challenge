@@ -3,17 +3,17 @@
     <v-layout row>
       <v-flex xs3 offset-xs1>
         <form @submit.prevent="createClip()">
-          <v-text-field v-model="currentClipName"
+          <v-text-field v-model="createClipName"
             label="Give a name to your clip"
             outline
             append-icon="person"
           ></v-text-field>
-          <v-text-field v-model="initTime"
+          <v-text-field v-model="createInitTime"
             label="Init Time"
             outline
             append-icon="playlist_play"
           ></v-text-field>
-          <v-text-field v-model="finalTime"
+          <v-text-field v-model="createFinalTime"
             label="Final Time"
             outline
             append-icon="playlist_add_check"
@@ -24,7 +24,7 @@
         </form>
       </v-flex>
       <v-flex xs6 order-lg2 offset-xs1>
-        <video width="570" controls :autoplay="autoplay" :src="videoSrc"></video>
+        <video width="570" controls autoplay :src="videoSrc"></video>
       </v-flex>
     </v-layout>
     <v-layout row>
@@ -36,74 +36,14 @@
             <v-btn icon>
               <v-icon>search</v-icon>
             </v-btn>
-            <v-btn icon>
-              <v-icon>check_circle</v-icon>
-            </v-btn>
           </v-toolbar>
           <v-list two-line>
-            <div v-for="(clip, index) in clips" :key="clip.clipName">
-              <v-list-tile
-                avatar
-                ripple
-              >
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ clip.clipName }}</v-list-tile-title>
-                  <v-list-tile-sub-title>From: {{ clip.beginAt }} to {{ clip.finishAt }}</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <video muted width="100" :src="clip.urlTime"></video>
-
-  
-                <v-list-tile-action>
-                  <v-btn icon @click="changeURLVideoPlayer(clip.urlTime)">
-                    <v-icon>play_circle_filled</v-icon>
-                  </v-btn>
-                  <v-menu bottom left v-if="clip.clipName != 'FullVideo'">
-                    <v-btn slot="activator" icon>
-                      <v-icon>more_vert</v-icon>
-                    </v-btn>
-                    <v-list>
-                      <v-list-tile @click="dialog = true">
-                        <v-icon>delete</v-icon>
-                      </v-list-tile>
-                      <v-list-tile @click="editClip(clip.clipName)">
-                        <v-icon>edit</v-icon>
-                      </v-list-tile>
-                    </v-list>
-                  </v-menu>
-                </v-list-tile-action>
-                
-              </v-list-tile>
-              <v-divider
-                v-if="index + 1 < clips.length"
-                :key="index"
-              ></v-divider>
-              <div>
-                <v-dialog v-model="dialog" max-width="290">
-                        <v-card>
-                          <v-card-title class="headline">Are you sure?</v-card-title>
-                          <v-card-text>
-                            You will not be able to recover this clip again.
-                          </v-card-text>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" flat="flat" @click="dialog = false">
-                              Cancel
-                            </v-btn>
-                            <v-btn color="green darken-1" flat="flat" @click="deleteClip(clip.clipName)">
-                              Delete anyway
-                            </v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog> 
-              </div>
-            </div>
+            <ClipsList v-for="clip in clips" :key="clip.clipName" :clipProperties="clip" @delete-clip="deleteClip($event)"/>
           </v-list>
         </v-card>
       </v-flex>
     </v-layout>
-  
     <ClipsList/>
-
   </v-container>
 </template>
 <script>
@@ -117,33 +57,37 @@ export default {
       return {
         defaultURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
         videoSrc: this.defaultURL,
-        initTime: '',
-        finalTime: '',
-        currentClipName: '',
-        dialog: false,
+        createClipName: '',
+        createInitTime: '',
+        createFinalTime: '',
+        editClipName: '',
+        editInitTime: '',
+        editFinalTime: '',
+        dialogDelete: false,
+        dialogEdit: false,
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf#t=0,52', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
   methods:{
     createClip: function() {
-      if(this.currentClipName.trim().length !== 0) {
+      if(this.createClipName.trim().length !== 0) {
         let existName = false;
         this.clips.forEach(clip => {
-          if(clip.clipName == this.currentClipName) {
+          if(clip.clipName == this.createClipName) {
             existName = true;
           }
         })
         if(!existName) {
           let newClip = {
             urlTime: this.URLwithParams,
-            clipName: this.currentClipName,
-            beginAt: this.initTime,
-            finishAt: this.finalTime
+            clipName: this.createClipName,
+            beginAt: this.createInitTime,
+            finishAt: this.createFinalTime
           }
           this.clips.push(newClip);
-          this.currentClipName = '';
-          this.initTime = 0;
-          this.finalTime = 0;
+          this.createClipName = '';
+          this.createInitTime = 0;
+          this.createFinalTime = 0;
         } else {
           alert('Clip Name already exists')
         }
@@ -156,35 +100,45 @@ export default {
       this.videoSrc = newURL;
     },
     deleteClip: function(clipName) {
+      console.log(clipName);
       let index;
-      let i = 0;
+      let i = 1;
+      console.log(clipName);
+      console.log(this.clips)
       // 1 because we don't want to delete the first element(full video)
       for(i; i< this.clips.length; i++) {
         if(this.clips[i].clipName === clipName) {
+          console.log(this.clips[i].clipName)
           index = i;
         }
       }
       this.clips.splice(index, 1);
-      this.dialog = false;
+      this.dialogDelete = false;
     },
     editClip: function(clipName) {
-      let newName = prompt('Enter a new name');
-      let newInit = prompt('new init time');
-      let newFinal = prompt('new final time');
+      console.log(clipName)
       this.clips.forEach(clip => {
         if(clip.clipName === clipName) {
-          clip.clipName = newName;  
-          clip.urlTime = this.defaultURL + "#t="+ newInit + ','+ newFinal;
+          console.log(clip.clipName);
+          console.log(clipName);
+          clip.clipName = this.editClipName;  
+          clip.urlTime = this.defaultURL + "#t="+ this.editInitTime + ','+ this.editFinalTime;
+          clip.beginAt = editInitTime;
+          clip.finishAt = editFinalTime;
           console.log(this.clips)
         }
       })
+      this.editClipName = '';
+      this.editInitTime = '';
+      this.editFinalTime = '';
+      this.dialogEdit = false;
     }
   },
   computed: {
     // a computed getter
     URLwithParams: function () {
       // `this` points to the vm instance
-      return this.defaultURL + '#t=' + this.initTime + ',' + this.finalTime
+      return this.defaultURL + '#t=' + this.createInitTime + ',' + this.createFinalTime
     }
   }
 
