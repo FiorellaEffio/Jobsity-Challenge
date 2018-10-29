@@ -50,19 +50,28 @@
                   <v-list-tile-title>{{ clip.clipName }}</v-list-tile-title>
                   <v-list-tile-sub-title>From: {{ clip.beginAt }} to {{ clip.finishAt }}</v-list-tile-sub-title>
                 </v-list-tile-content>
+                <video muted width="100" :src="clip.urlTime"></video>
+
   
                 <v-list-tile-action>
-                  <video muted width="100" :src="clip.urlTime"></video>
+                  <v-btn icon @click="changeURLVideoPlayer(clip.urlTime)">
+                    <v-icon>play_circle_filled</v-icon>
+                  </v-btn>
+                  <v-menu bottom left v-if="clip.clipName != 'FullVideo'">
+                    <v-btn slot="activator" icon>
+                      <v-icon>more_vert</v-icon>
+                    </v-btn>
+                    <v-list>
+                      <v-list-tile @click="deleteClip(clip.clipName)">
+                        <v-icon>delete</v-icon>
+                      </v-list-tile>
+                      <v-list-tile @click="editClip(clip.clipName)">
+                        <v-icon>edit</v-icon>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
                 </v-list-tile-action>
-                <v-btn icon @click="changeURLVideoPlayer(clip.urlTime)">
-                  <v-icon>play_circle_filled</v-icon>
-                </v-btn>
-                <v-btn icon v-if="clip.clipName != 'FullVideo'" @click="deleteClip(clip.clipName)">
-                  <v-icon>delete</v-icon>
-                </v-btn>
-                <v-btn icon v-if="clip.clipName != 'FullVideo'" @click="editClip(clip.clipName)">
-                  <v-icon>edit</v-icon>
-                </v-btn>
+                
               </v-list-tile>
               <v-divider
                 v-if="index + 1 < clips.length"
