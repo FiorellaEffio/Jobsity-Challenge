@@ -30,7 +30,7 @@
         <video width="570" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
         <v-btn @click="changeURLVideoPlayer('previous')">Previous</v-btn>
         <v-btn @click="changeURLVideoPlayer('next')">Next</v-btn>
-        {{currentTimeVideoPlayer}}
+        {{currentTimeVideoPlayer}}/
       </v-flex>
     </v-layout>
     <!-- Clips List -->
@@ -166,9 +166,17 @@ export default {
       this.chips.splice(this.chips.indexOf(item), 1)
       this.chips = [...this.chips]
     },
+    // change name 
     consol () {
       console.log('esta cambiando')
+      const self = this;
       this.currentTimeVideoPlayer = Math.round(this.$refs.videoPlayer.currentTime)
+      console.log(this.currentTimeVideoPlayer)
+      if(this.currentTimeVideoPlayer === 10) {
+        self.changeURLVideoPlayer('next')
+      }
+      // if(this.currentTimeVideoPlayer === this.clips[this.currentIndexClip].finishAt) {
+      // }
     }
   },
   computed: {
@@ -177,11 +185,16 @@ export default {
       this.clips.forEach(element => {
         let findTag = false;
         let i = 0;
+        
         for(i; i<element.tags.length; i++) {
           if((element.tags[i].toUpperCase()).indexOf((this.tagSearch).toUpperCase()) !== -1) {
             findTag = true;
             i=element.tags.length;
           }
+        }
+        // When a clip has no tags
+        if(element.tags.length === 0 && this.tagSearch === '') {
+          findTag = true;
         }
         if(findTag) {
           result.push(element);
@@ -189,7 +202,7 @@ export default {
       })
       return result;
     }
-  }
+  },
 }
 </script>
 <style scoped>
