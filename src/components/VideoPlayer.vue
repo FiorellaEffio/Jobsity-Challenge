@@ -27,9 +27,10 @@
         </form>
       </v-flex>
       <v-flex xs6 order-lg2 offset-xs1>
-        <video width="570" controls autoplay :src="videoSrcPlayer"></video>
+        <video width="570" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
         <v-btn @click="changeURLVideoPlayer('previous')">Previous</v-btn>
         <v-btn @click="changeURLVideoPlayer('next')">Next</v-btn>
+        {{currentTimeVideoPlayer}}
       </v-flex>
     </v-layout>
     <!-- Clips List -->
@@ -65,6 +66,7 @@ export default {
         createClipName: '',
         createInitTime: '',
         createFinalTime: '',
+        currentTimeVideoPlayer: 0,
         tagSearch: '',
         chips: [],
         items: ['music', 'action', 'girl'],
@@ -84,6 +86,9 @@ export default {
         self.changeURLVideoPlayer('next');
       }
     });
+    self.$refs.ontimeupdate = function() {
+      this.currentTimeVideoPlayer = self.$refs.currentTime;
+    };
   },
   methods:{
     createClip: function() {
@@ -160,6 +165,9 @@ export default {
     removeTag (item) {
       this.chips.splice(this.chips.indexOf(item), 1)
       this.chips = [...this.chips]
+    },
+    consol () {
+      console.log('esta cambiando')
     }
   },
   computed: {
