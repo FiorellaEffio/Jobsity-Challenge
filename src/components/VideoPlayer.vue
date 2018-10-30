@@ -39,6 +39,7 @@
           <v-toolbar color="pink" dark>
             <v-toolbar-title>Clips List</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-input v-model="tagSearch"></v-input>
             <v-btn icon>
               <v-icon>search</v-icon>
             </v-btn>
@@ -162,8 +163,8 @@ export default {
     }
   },
   computed: {
-    clipsFiltered: function () {
-      return this.clips.filter(clip => ((clip.tags).indexOf(this.tagSearch) !== -1));
+    clipsFiltered: () => {
+      return clips.filter(clip => ((clip.tags).indexOf(this.tagSearch) !== -1));
     }
   }
 }

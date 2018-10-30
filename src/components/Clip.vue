@@ -27,7 +27,7 @@
       </v-list-tile-action>
     </v-list-tile>
     <!-- Tags -->
-    <v-chip color="green" outline disabled v-for="chip in chips">{{chip}}</v-chip>
+    <v-chip color="green" outline disabled v-for="chip in chips" :key="chip">{{chip}}</v-chip>
     <v-divider></v-divider>
     <!-- Dialog for delete -->
     <v-dialog v-model="dialogDelete" max-width="290">
