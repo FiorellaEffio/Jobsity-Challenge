@@ -168,15 +168,22 @@ export default {
     },
     // change name 
     consol () {
-      console.log('esta cambiando')
       const self = this;
+      console.log('entra')
       this.currentTimeVideoPlayer = Math.round(this.$refs.videoPlayer.currentTime)
       console.log(this.currentTimeVideoPlayer)
-      if(this.currentTimeVideoPlayer === 10) {
+      let i = 0;
+      let timeToPlayNext;
+      for(i; i<this.clips.length; i++) {
+        if(this.clips[i].urlTime === this.videoSrcPlayer) {
+          timeToPlayNext = this.clips[i].finishAt;
+        }
+      }
+      console.log(timeToPlayNext)
+      if(this.currentTimeVideoPlayer === timeToPlayNext) {
+        console.log('correria')
         self.changeURLVideoPlayer('next')
       }
-      // if(this.currentTimeVideoPlayer === this.clips[this.currentIndexClip].finishAt) {
-      // }
     }
   },
   computed: {
