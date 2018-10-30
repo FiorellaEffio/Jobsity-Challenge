@@ -168,7 +168,7 @@ export default {
     },
     consol () {
       console.log('esta cambiando')
-      this.currentTimeVideoPlayer = this.$refs.videoPlayer.currentTime
+      this.currentTimeVideoPlayer = Math.round(this.$refs.videoPlayer.currentTime)
     }
   },
   computed: {
