@@ -33,19 +33,19 @@
       </v-flex>
     </v-layout>
     <!-- Clips List -->
+    <textarea v-model="tagSearch" placeholder="Search by tag name"></textarea>
     <v-layout row>
       <v-flex xs10 offset-xs1>
         <v-card>
           <v-toolbar color="pink" dark>
             <v-toolbar-title>Clips List</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-input v-model="tagSearch"></v-input>
             <v-btn icon>
               <v-icon>search</v-icon>
             </v-btn>
           </v-toolbar>
           <v-list two-line>
-            <Clip v-for="clip in clips" :key="clip.clipName" :clipProperties="clip" @change-src="changeURLVideoPlayer($event)" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
+            <Clip v-for="clip in clipsFiltered" :key="clip.clipName" :clipProperties="clip" @change-src="changeURLVideoPlayer($event)" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
           </v-list>
         </v-card>
       </v-flex>
@@ -68,7 +68,7 @@ export default {
         tagSearch: '',
         chips: [],
         items: ['music', 'action', 'girl'],
-        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
+        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52, tags:['fullvideo']}]
       }
     },
   mounted() {
@@ -163,8 +163,22 @@ export default {
     }
   },
   computed: {
-    clipsFiltered: () => {
-      return clips.filter(clip => ((clip.tags).indexOf(this.tagSearch) !== -1));
+    clipsFiltered: function() {
+      let result = [];
+      this.clips.forEach(element => {
+        let findTag = false;
+        let i = 0;
+        for(i; i<element.tags.length; i++) {
+          if((element.tags[i].toUpperCase()).indexOf((this.tagSearch).toUpperCase()) !== -1) {
+            findTag = true;
+            i=element.tags.length;
+          }
+        }
+        if(findTag) {
+          result.push(element);
+        }
+      })
+      return result;
     }
   }
 }
