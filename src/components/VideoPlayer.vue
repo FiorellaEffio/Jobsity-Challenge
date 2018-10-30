@@ -69,6 +69,7 @@ export default {
         currentTimeVideoPlayer: 0,
         tagSearch: '',
         chips: [],
+        setTimeBoolean: '',
         // you can change the options for this and also the user can add whichever he or she wants
         items: ['music', 'action', 'girl'],
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52, tags:['fullvideo']}]
@@ -141,6 +142,7 @@ export default {
       } else {
         this.videoSrcPlayer = newURL;
       }
+      this.setTimeBoolean = '';
     },
     deleteClip: function(clipName) {
       let index;
@@ -179,12 +181,12 @@ export default {
         if(this.clips[i].urlTime === this.videoSrcPlayer) {
           timeToPlayNext = this.clips[i].finishAt;
         }
-      }
-      console.log(timeToPlayNext)
-      if(this.currentTimeVideoPlayer === parseInt(timeToPlayNext)) {
-        console.log('correria')
-        self.changeURLVideoPlayer('next')
-      }
+      };
+      if((this.currentTimeVideoPlayer === parseInt(timeToPlayNext)) && (this.setTimeBoolean === '')) {
+        this.setTimeBoolean = setTimeout(function() { self.changeURLVideoPlayer('next'); }, 3000);
+        console.log(setTimeBoolean);
+        setTimeout(function(){ self.changeURLVideoPlayer('next'); }, 3000);
+      };
     }
   },
   computed: {
