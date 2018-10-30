@@ -61,7 +61,7 @@ export default {
   data () {
       return {
         defaultURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
-        videoSrcPlayer: this.defaultURL,
+        videoSrcPlayer: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
         createClipName: '',
         createInitTime: '',
         createFinalTime: '',
