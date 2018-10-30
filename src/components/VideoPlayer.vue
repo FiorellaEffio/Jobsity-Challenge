@@ -7,6 +7,20 @@
           <v-text-field v-model="createClipName" label="Give a name to your clip" outline append-icon="person"></v-text-field>
           <v-text-field v-model="createInitTime" label="Init Time" outline append-icon="playlist_play"></v-text-field>
           <v-text-field v-model="createFinalTime" label="Final Time" outline append-icon="playlist_add_check"></v-text-field>
+          <v-combobox v-model="chips" :items="items"
+            label="Add tags"
+            chips clearable
+            solo
+            multiple
+            outline
+          >
+            <template slot="selection" slot-scope="data">
+              <v-chip :selected="data.selected" close @input="removeTag(data.item)">
+                <strong>{{ data.item }}</strong>
+              </v-chip>
+            </template>
+          </v-combobox>
+
           <div class="text-xs-center">
             <v-btn round color="orange" dark type="submit">Create clip</v-btn>
           </div>
@@ -50,6 +64,9 @@ export default {
         createClipName: '',
         createInitTime: '',
         createFinalTime: '',
+        tagSearch: '',
+        chips: [],
+        items: ['music', 'action', 'girl'],
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52}]
       }
     },
@@ -81,12 +98,14 @@ export default {
             urlTime: this.defaultURL + "#t=" + this.createInitTime  +","+ this.createFinalTime,
             clipName: this.createClipName,
             beginAt: this.createInitTime,
-            finishAt: this.createFinalTime
+            finishAt: this.createFinalTime,
+            tags: this.chips
           }
           this.clips.push(newClip);
           this.createClipName = '';
           this.createInitTime = 0;
           this.createFinalTime = 0;
+          this.chips = [];
         } else {
           alert('Clip Name already exists')
         }
@@ -136,8 +155,17 @@ export default {
           clip.finishAt = newClip.finishAt;
         }
       })
+    },
+    removeTag (item) {
+      this.chips.splice(this.chips.indexOf(item), 1)
+      this.chips = [...this.chips]
     }
   },
+  computed: {
+    clipsFiltered: function () {
+      return this.clips.filter(clip => ((clip.tags).indexOf(this.tagSearch) !== -1));
+    }
+  }
 }
 </script>
 <style scoped>

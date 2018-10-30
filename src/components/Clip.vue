@@ -26,6 +26,8 @@
         </v-menu>
       </v-list-tile-action>
     </v-list-tile>
+    <!-- Tags -->
+    <v-chip color="green" outline disabled v-for="chip in chips">{{chip}}</v-chip>
     <v-divider></v-divider>
     <!-- Dialog for delete -->
     <v-dialog v-model="dialogDelete" max-width="290">
@@ -91,7 +93,7 @@ export default {
         dialogEdit: false,
         editClipName:'',
         editBeginAt: '',
-        editFinishAt: '',
+        editFinishAt: '',        
       }
     },
   methods:{
@@ -103,8 +105,13 @@ export default {
         previousClipName: this.clipProperties.clipName,
       };
       this.$emit('edit-clip',newClipProperties);
-    }
+    },
   },
+  computed: {
+    chips: function () {
+      return this.clipProperties.tags;
+    }
+  }
 
 }
 </script>
