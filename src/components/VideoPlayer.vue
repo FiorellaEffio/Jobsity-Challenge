@@ -99,7 +99,6 @@ export default {
     if (localStorage.getItem('clips')) {
       this.clips = JSON.parse(localStorage.getItem('clips'));
     }
-
   },
   watch: {
     clips: {
@@ -201,7 +200,8 @@ export default {
         }
       };
       if((this.currentTimeVideoPlayer === parseInt(timeToPlayNext)) && (this.setTimeBoolean === '')) {
-        this.setTimeBoolean = setTimeout(function() { self.changeURLVideoPlayer('next'); }, 3000);
+        console.log('ñoo')
+        this.setTimeBoolean = 'not empty';
         setTimeout(function(){ self.changeURLVideoPlayer('next'); }, 3000);
       };
     }
