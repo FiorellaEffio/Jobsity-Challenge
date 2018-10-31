@@ -34,6 +34,16 @@
         <video :width="widthByEdit" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
         <v-btn @click="changeURLVideoPlayer('previous')">Previous</v-btn>
         <v-btn @click="changeURLVideoPlayer('next')">Next</v-btn>
+        <v-progress-circular v-if="seen"
+          :rotate="180"
+          :size="100"
+          :width="15"
+          :value="value"
+          color="pink"
+        >
+          {{ valueNumber }}
+        </v-progress-circular>
+        CLIPNAME = {{currentClipName}}
         {{currentTimeVideoPlayer}}/
       </v-flex>
     </v-layout>
@@ -71,11 +81,16 @@ export default {
         createInitTime: '',
         createFinalTime: '',
         currentTimeVideoPlayer: 0,
+        currentClipName: 'FullVideo',
         tagSearch: '',
         chips: [],
         setTimeBoolean: '',
         editingModeBoolean: true,
         colorEditingMode: 'red',
+        // values for animation 3,2,1 next clip
+        interval: {},
+        value: 0,
+        seen: false,
         // you can change the options for this and also the user can add whichever he or she wants
         items: ['music', 'action', 'girl'],
         clips: [{urlTime: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4', clipName: 'FullVideo', beginAt:0,finishAt: 52, tags:['fullvideo']}]
@@ -99,6 +114,12 @@ export default {
     if (localStorage.getItem('clips')) {
       this.clips = JSON.parse(localStorage.getItem('clips'));
     }
+    this.interval = setInterval(() => {
+      if (this.value === 100) {
+        this.seen = false;
+      }
+      this.value += 100/3
+    }, 1000)
   },
   watch: {
     clips: {
@@ -137,6 +158,7 @@ export default {
       }
     },
     changeURLVideoPlayer: function(newURL) {
+      console.log(newURL)
       let i = 0;
       let index;
       for(i; i<this.clips.length; i++) {
@@ -147,14 +169,17 @@ export default {
       if(newURL === 'previous') {
         index--;
         if(index >= 0) {
+          this.currentClipName = this.clips[index].clipName;
           this.videoSrcPlayer = this.clips[index].urlTime;
         }
       } else if(newURL === 'next') {
         index++;
         if(index<=this.clips.length-1) {
+          this.currentClipName = this.clips[index].clipName;
           this.videoSrcPlayer = this.clips[index].urlTime;
         }
       } else {
+        this.currentClipName = this.clips[index].clipName;
         this.videoSrcPlayer = newURL;
       }
       this.setTimeBoolean = '';
@@ -200,9 +225,11 @@ export default {
         }
       };
       if((this.currentTimeVideoPlayer === parseInt(timeToPlayNext)) && (this.setTimeBoolean === '')) {
+        console.log(this.currentClipName)
         console.log('ñoo')
         this.setTimeBoolean = 'not empty';
-        setTimeout(function(){ self.changeURLVideoPlayer('next'); }, 3000);
+        this.seen = true;
+        setTimeout(function(){ self.changeURLVideoPlayer('next'); self.seen = false;}, 3000);
       };
     }
   },
@@ -246,9 +273,15 @@ export default {
         this.colorEditingMode = 'green'
       }
       return result;
+    },
+    valueNumber: function() {
+      return 3 - (this.value*3)/100
     }
   },
 }
 </script>
 <style scoped>
+.v-progress-circular {
+  margin: 1rem
+} 
 </style>
