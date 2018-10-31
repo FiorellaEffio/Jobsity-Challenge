@@ -31,7 +31,7 @@
         </form>
       </v-flex>
       <v-flex xs6 order-lg2 offset-xs1>
-        <video width="570" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
+        <video :width="widthByEdit" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
         <v-btn @click="changeURLVideoPlayer('previous')">Previous</v-btn>
         <v-btn @click="changeURLVideoPlayer('next')">Next</v-btn>
         {{currentTimeVideoPlayer}}/
@@ -228,6 +228,13 @@ export default {
         }
       })
       return result;
+    },
+    widthByEdit: function () {
+      if(this.editingModeBoolean) {
+        return 570;
+      } else {
+        return 950;
+      }
     },
     editingMode: function () {
       let result;
