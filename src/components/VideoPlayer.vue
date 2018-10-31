@@ -5,8 +5,23 @@
       {{editingMode}}
     </v-btn>
     <!-- Video Player -->
-    <v-layout row>
-      <v-flex xs3 offset-xs1 v-if="editingModeBoolean">
+    <v-layout row wrap>
+      <v-flex xs10 offset-xs1>
+        <div class="headline pink white--text">CLIPNAME : {{currentClipName}}</div>
+        <video width="100%" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
+        <v-btn @click="changeURLVideoPlayer('previous')"><v-icon>arrow_back_ios</v-icon> Previous</v-btn>
+        <v-btn @click="changeURLVideoPlayer('next')">Next <v-icon>arrow_forward_ios</v-icon></v-btn>
+        <v-progress-circular v-if="seen"
+          :rotate="180"
+          :size="100"
+          :width="15"
+          :value="value"
+          color="pink"
+        >
+          {{ valueNumber }}
+        </v-progress-circular>
+      </v-flex>
+      <v-flex xs8 offset-xs2 v-if="editingModeBoolean">
         <form @submit.prevent="createClip()">
           <v-text-field v-model="createClipName" label="Give a name to your clip" outline append-icon="person"></v-text-field>
           <v-text-field v-model="createInitTime" label="Init Time" outline append-icon="playlist_play"></v-text-field>
@@ -30,31 +45,15 @@
           </div>
         </form>
       </v-flex>
-      <v-flex xs6 order-lg2 offset-xs1>
-        <video :width="widthByEdit" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
-        <v-btn @click="changeURLVideoPlayer('previous')">Previous</v-btn>
-        <v-btn @click="changeURLVideoPlayer('next')">Next</v-btn>
-        <v-progress-circular v-if="seen"
-          :rotate="180"
-          :size="100"
-          :width="15"
-          :value="value"
-          color="pink"
-        >
-          {{ valueNumber }}
-        </v-progress-circular>
-        CLIPNAME = {{currentClipName}}
-        {{currentTimeVideoPlayer}}/
-      </v-flex>
     </v-layout>
     <!-- Clips List -->
-    <textarea v-model="tagSearch" placeholder="Search by tag name"></textarea>
     <v-layout row>
       <v-flex xs10 offset-xs1>
         <v-card>
           <v-toolbar color="pink" dark>
             <v-toolbar-title>Clips List</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-text-field color="white" v-model="tagSearch"></v-text-field>
             <v-btn icon>
               <v-icon>search</v-icon>
             </v-btn>

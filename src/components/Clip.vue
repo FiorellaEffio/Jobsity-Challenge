@@ -112,7 +112,6 @@ export default {
       return this.clipProperties.tags;
     }
   }
-
 }
 </script>
 <style scoped>
