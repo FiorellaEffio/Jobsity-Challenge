@@ -89,12 +89,6 @@ export default {
         currentTimeVideoPlayer: 0,
         tagSearch: '',
         chips: [],
-        markers: [
-        {time: 9.5, text: "clip1"},
-        {time: 20,  text: "is"},
-        {time: 25,text: "so"},
-        {time: 30,  text: "cool"}
-      ],
         setTimeBoolean: '',
         editingModeBoolean: true,
         colorEditingMode: 'red',
@@ -294,6 +288,16 @@ export default {
         }
       }
       return this.clips[index].clipName;
+    },
+    markers: function() {
+      let result = [];
+      for(let i = 0; i<this.clips.length; i++) {
+        let newMarker = {};
+        newMarker.time = this.clips[i].beginAt;
+        newMarker.text = this.clips[i].clipName;
+        result.push(newMarker);
+      }
+      return result;
     }
   },
 }
