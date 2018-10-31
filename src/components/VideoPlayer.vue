@@ -8,7 +8,12 @@
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
         <div class="headline pink white--text">CLIPNAME : {{currentClipName}}</div>
-        <video width="100%" @timeupdate="updatedTimeVideo()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
+        <video class="video-js vjs-default-skin"
+    controls
+    preload="auto"
+    autoplay
+    data-setup='{"width": 947, "height": 360}'
+         width="100%" @timeupdate="updatedTimeVideo()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
         <v-btn @click="changeURLVideoPlayer('previous')"><v-icon>arrow_back_ios</v-icon> Previous</v-btn>
         <v-btn @click="changeURLVideoPlayer('next')">Next <v-icon>arrow_forward_ios</v-icon></v-btn>
         <v-progress-circular v-if="seen"
@@ -68,6 +73,8 @@
 </template>
 <script>
 import Clip from './Clip'
+import videojs from "video.js" 
+import videomarkers from "videojs-markers"
 export default {
   components: {
     Clip
@@ -118,6 +125,15 @@ export default {
       }
       this.value += 100/3
     }, 1000)
+    let video = videojs(this.$refs.videoPlayer);
+    video.markers({
+      markers: [
+        {time: 9.5, text: "this"},
+        {time: 20,  text: "is"},
+        {time: 25,text: "so"},
+        {time: 30,  text: "cool"}
+      ]
+    });
   },
   watch: {
     clips: {
@@ -288,3 +304,4 @@ export default {
   margin: 1rem
 } 
 </style>
+  
