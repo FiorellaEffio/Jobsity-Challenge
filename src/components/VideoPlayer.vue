@@ -89,6 +89,12 @@ export default {
         currentTimeVideoPlayer: 0,
         tagSearch: '',
         chips: [],
+        markers: [
+        {time: 9.5, text: "clip1"},
+        {time: 20,  text: "is"},
+        {time: 25,text: "so"},
+        {time: 30,  text: "cool"}
+      ],
         setTimeBoolean: '',
         editingModeBoolean: true,
         colorEditingMode: 'red',
@@ -126,14 +132,7 @@ export default {
       this.value += 100/3
     }, 1000)
     let video = videojs(this.$refs.videoPlayer);
-    video.markers({
-      markers: [
-        {time: 9.5, text: "this"},
-        {time: 20,  text: "is"},
-        {time: 25,text: "so"},
-        {time: 30,  text: "cool"}
-      ]
-    });
+    video.markers({markers: self.markers});
   },
   watch: {
     clips: {

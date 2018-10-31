@@ -37,8 +37,7 @@ Create an application that allows a user to slice up a video (sample video: http
 - [X] The ability to automatically jump to the next clip after it finishes, with a 3 second waiting period and appropriate loading animation.
 - [X] The ability to ‘save’ clips for persistent use.(localStorage)
 - [X] The ability to reuse the player and playlist on another page without the editing capabilities
-
-- [ ] Markers on the video player timeline that denote where a clip starts (full video only).
+- [X] Markers on the video player timeline that denote where a clip starts (full video only).
 - [ ] Clicking the marker chooses that clip and plays it from that point.
 
 
