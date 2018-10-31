@@ -91,6 +91,17 @@ export default {
     self.$refs.ontimeupdate = function() {
       this.currentTimeVideoPlayer = self.$refs.currentTime;
     };
+    if (localStorage.getItem('clips')) {
+      this.clips = JSON.parse(localStorage.getItem('clips'));
+    }
+
+  },
+  watch: {
+    clips: {
+      handler() {
+        localStorage.setItem('clips', JSON.stringify(this.clips));
+      },
+    },
   },
   methods:{
     createClip: function() {
@@ -172,9 +183,7 @@ export default {
     // change name 
     consol () {
       const self = this;
-      console.log('entra')
       this.currentTimeVideoPlayer = Math.round(this.$refs.videoPlayer.currentTime)
-      console.log(this.currentTimeVideoPlayer)
       let i = 0;
       let timeToPlayNext;
       for(i; i<this.clips.length; i++) {
@@ -184,7 +193,6 @@ export default {
       };
       if((this.currentTimeVideoPlayer === parseInt(timeToPlayNext)) && (this.setTimeBoolean === '')) {
         this.setTimeBoolean = setTimeout(function() { self.changeURLVideoPlayer('next'); }, 3000);
-        console.log(setTimeBoolean);
         setTimeout(function(){ self.changeURLVideoPlayer('next'); }, 3000);
       };
     }
