@@ -81,7 +81,6 @@ export default {
         createInitTime: '',
         createFinalTime: '',
         currentTimeVideoPlayer: 0,
-        currentClipName: 'FullVideo',
         tagSearch: '',
         chips: [],
         setTimeBoolean: '',
@@ -158,7 +157,6 @@ export default {
       }
     },
     changeURLVideoPlayer: function(newURL) {
-      console.log(newURL)
       let i = 0;
       let index;
       for(i; i<this.clips.length; i++) {
@@ -169,17 +167,14 @@ export default {
       if(newURL === 'previous') {
         index--;
         if(index >= 0) {
-          this.currentClipName = this.clips[index].clipName;
           this.videoSrcPlayer = this.clips[index].urlTime;
         }
       } else if(newURL === 'next') {
         index++;
         if(index<=this.clips.length-1) {
-          this.currentClipName = this.clips[index].clipName;
           this.videoSrcPlayer = this.clips[index].urlTime;
         }
       } else {
-        this.currentClipName = this.clips[index].clipName;
         this.videoSrcPlayer = newURL;
       }
       this.setTimeBoolean = '';
@@ -225,9 +220,8 @@ export default {
         }
       };
       if((this.currentTimeVideoPlayer === parseInt(timeToPlayNext)) && (this.setTimeBoolean === '')) {
-        console.log(this.currentClipName)
-        console.log('ñoo')
         this.setTimeBoolean = 'not empty';
+        this.value = 0;
         this.seen = true;
         setTimeout(function(){ self.changeURLVideoPlayer('next'); self.seen = false;}, 3000);
       };
@@ -276,6 +270,16 @@ export default {
     },
     valueNumber: function() {
       return 3 - (this.value*3)/100
+    },
+    currentClipName: function() {
+      let index;
+      for(let i = 0; i<this.clips.length; i++) {
+        if(this.videoSrcPlayer === this.clips[i].urlTime) {
+          index = i;
+          i = this.clips.length;
+        }
+      }
+      return this.clips[index].clipName;
     }
   },
 }
