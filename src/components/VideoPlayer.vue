@@ -78,13 +78,12 @@ export default {
   mounted() {
     const self = this
     window.addEventListener('keyup', function(event) {
-      // If down arrow was pressed...
       if (event.keyCode == 37) { 
-        // left
+        // left arrow
         self.changeURLVideoPlayer('previous');
       }
       if (event.keyCode == 39) { 
-        // rigth
+        // rigth arrow
         self.changeURLVideoPlayer('next');
       }
     });
@@ -167,6 +166,7 @@ export default {
       this.clips.splice(index, 1);
     },
     editClip: function(newClip) {
+      let saveLocalStorage;
       this.clips.forEach(clip => {
         if(clip.clipName === newClip.previousClipName) {
           clip.clipName = newClip.clipName;  
@@ -175,6 +175,9 @@ export default {
           clip.finishAt = newClip.finishAt;
         }
       })
+      saveLocalStorage = this.clips;
+      this.clips = [];
+      this.clips = saveLocalStorage;
     },
     removeTag (item) {
       this.chips.splice(this.chips.indexOf(item), 1)
