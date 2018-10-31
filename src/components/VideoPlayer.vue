@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <!-- Button to change editing mode -->
+    <v-btn flat :color="colorEditingMode" @click="editingModeBoolean = !editingModeBoolean">
+      {{editingMode}}
+    </v-btn>
     <!-- Video Player -->
     <v-layout row>
       <v-flex xs3 offset-xs1>
@@ -70,6 +74,8 @@ export default {
         tagSearch: '',
         chips: [],
         setTimeBoolean: '',
+        editingModeBoolean: true,
+        colorEditingMode: 'red',
         // you can change the options for this and also the user can add whichever he or she wants
         items: ['music', 'action', 'girl'],
         clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52, tags:['fullvideo']}]
@@ -221,6 +227,17 @@ export default {
           result.push(element);
         }
       })
+      return result;
+    },
+    editingMode: function () {
+      let result;
+      if(this.editingModeBoolean) {
+        result = 'Editing mode activated'
+        this.colorEditingMode = 'red'
+      } else {
+        result = 'Editing mode desactivated'
+        this.colorEditingMode = 'green'
+      }
       return result;
     }
   },
