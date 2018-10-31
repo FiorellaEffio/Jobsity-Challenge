@@ -6,7 +6,7 @@
     </v-btn>
     <!-- Video Player -->
     <v-layout row>
-      <v-flex xs3 offset-xs1>
+      <v-flex xs3 offset-xs1 v-if="editingModeBoolean">
         <form @submit.prevent="createClip()">
           <v-text-field v-model="createClipName" label="Give a name to your clip" outline append-icon="person"></v-text-field>
           <v-text-field v-model="createInitTime" label="Init Time" outline append-icon="playlist_play"></v-text-field>
@@ -50,7 +50,7 @@
             </v-btn>
           </v-toolbar>
           <v-list two-line>
-            <Clip v-for="clip in clipsFiltered" :key="clip.clipName" :clipProperties="clip" @change-src="changeURLVideoPlayer($event)" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
+            <Clip v-for="clip in clipsFiltered" :key="clip.clipName" :clipProperties="clip" :editingModeClip="editingModeBoolean" @change-src="changeURLVideoPlayer($event)" @delete-clip="deleteClip($event)" @edit-clip="editClip($event)"/>
           </v-list>
         </v-card>
       </v-flex>
@@ -65,8 +65,8 @@ export default {
   },
   data () {
       return {
-        defaultURL: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
-        videoSrcPlayer: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf',
+        defaultURL: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
+        videoSrcPlayer: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
         createClipName: '',
         createInitTime: '',
         createFinalTime: '',
@@ -78,7 +78,7 @@ export default {
         colorEditingMode: 'red',
         // you can change the options for this and also the user can add whichever he or she wants
         items: ['music', 'action', 'girl'],
-        clips: [{urlTime: 'https://firebasestorage.googleapis.com/v0/b/jobsity-challenge.appspot.com/o/test%2Fsintel_trailer-480p.mp4?alt=media&token=fd2e61e1-f77f-4fa6-95f3-2f8d97532eaf', clipName: 'FullVideo', beginAt:0,finishAt: 52, tags:['fullvideo']}]
+        clips: [{urlTime: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4', clipName: 'FullVideo', beginAt:0,finishAt: 52, tags:['fullvideo']}]
       }
     },
   mounted() {

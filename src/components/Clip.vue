@@ -11,7 +11,7 @@
         <v-btn icon @click="$emit('change-src', clipProperties.urlTime)">
           <v-icon>play_circle_filled</v-icon>
         </v-btn>
-        <v-menu bottom left v-if="clipProperties.clipName != 'FullVideo'">
+        <v-menu bottom left v-if="clipProperties.clipName != 'FullVideo' && editingModeClip">
           <v-btn slot="activator" icon>
             <v-icon>more_vert</v-icon>
           </v-btn>
@@ -85,7 +85,7 @@
 
 export default {
   name: 'Clip',
-  props: ['clipProperties'],
+  props: ['clipProperties', 'editingModeClip'],
   data () {
       return {
         clip:'hola',
