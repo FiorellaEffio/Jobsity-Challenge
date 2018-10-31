@@ -8,7 +8,7 @@
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
         <div class="headline pink white--text">CLIPNAME : {{currentClipName}}</div>
-        <video width="100%" @timeupdate="consol()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
+        <video width="100%" @timeupdate="updatedTimeVideo()" controls autoplay :src="videoSrcPlayer" ref="videoPlayer"></video>
         <v-btn @click="changeURLVideoPlayer('previous')"><v-icon>arrow_back_ios</v-icon> Previous</v-btn>
         <v-btn @click="changeURLVideoPlayer('next')">Next <v-icon>arrow_forward_ios</v-icon></v-btn>
         <v-progress-circular v-if="seen"
@@ -53,7 +53,7 @@
           <v-toolbar color="pink" dark>
             <v-toolbar-title>Clips List</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-text-field color="white" v-model="tagSearch"></v-text-field>
+            <v-text-field color="white" placeholder="Search tag" v-model="tagSearch"></v-text-field>
             <v-btn icon>
               <v-icon>search</v-icon>
             </v-btn>
@@ -208,7 +208,7 @@ export default {
       this.chips = [...this.chips]
     },
     // change name 
-    consol () {
+    updatedTimeVideo () {
       const self = this;
       this.currentTimeVideoPlayer = Math.round(this.$refs.videoPlayer.currentTime)
       let i = 0;
