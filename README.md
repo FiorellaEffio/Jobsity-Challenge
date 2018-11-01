@@ -1,6 +1,10 @@
 # jobsity-challenge
 
-> A Vue.js project
+## Assignment
+
+Create an application that allows a user to slice up a video (sample video: https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4) into clips.
+
+This project use the following technologies: Vue.js, Vuetify, localStorage, media fragments, video.js library and videojs-markers plugin.
 
 ## Build Setup
 
@@ -10,16 +14,7 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
-
-## Assignment
-Create an application that allows a user to slice up a video (sample video: https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4) into clips.
 
 ## Mandatory Features
 
@@ -36,12 +31,7 @@ Create an application that allows a user to slice up a video (sample video: http
 - [X] Hotkeys to jump between the current clip and next and previous clips (if there are any)
 - [X] The ability to automatically jump to the next clip after it finishes, with a 3 second waiting period and appropriate loading animation.
 - [X] The ability to ‘save’ clips for persistent use.(localStorage)
-- [X] The ability to reuse the player and playlist on another page without the editing capabilities
+- [X] The ability to reuse the player and playlist on another page without the editing capabilities(button to active Editing Mode)
 - [X] Markers on the video player timeline that denote where a clip starts (full video only).
 - [ ] Clicking the marker chooses that clip and plays it from that point.
 
-
-Procura usar buenas prácticas de
-desarrollo, código limpio y eficiente, e incluye un readme con
-información de instalación o cualquier detalle que consideres
-importante.
